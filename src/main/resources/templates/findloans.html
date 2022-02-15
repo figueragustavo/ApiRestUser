@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+	<head>
+		<meta charset="ISO-8859-1">
+		<title>Inicio head</title>
+	</head>
+	<body>
+		<h1>ApiUsuarios</h1>
+		<a th:href="@{/}">Regresar</a>
+		<a th:href="@{/addLoan}">Crear prestamo</a>
+		<p th:text="${mensaje}"></p>
+		<br>
+		<div th:if="${loans != null and !loans.empty}">
+			<table border="1">
+				<tr>
+					<th>id:</th>
+					<th>total:</th>
+					<th>Editar</th>
+                    <th>Eliminar</th>
+				</tr>
+				<tr th:each="loan : ${loans}">
+					<td th:text = "${loan.id}">Mostrar Id</td>
+					<td th:text = "${loan.total}">Mostrar Total</td>
+					<td><a th:href="@{/editLoan/} + ${loan.id}" th:text="Editar"/></td>
+                    <td><a th:href="@{/deleteLoan(id=${loan.id})}" th:text="Eliminar"/></td>
+				</tr>
+			
+			</table>
+		</div>
+		<div th:if="${loans == null or loans.empty}">
+			La lista esta vacia.
+		</div>
+	</body>
+</html>

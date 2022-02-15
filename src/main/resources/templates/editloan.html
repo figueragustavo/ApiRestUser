@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" 
+      xmlns="http://www.w3.org/1999/xhtml">
+    <head>
+        <title>Datos del Usuario</title>
+        <meta charset="UTF-8"/>
+    </head>
+    <body>
+        <h1>Datos del Prestamo</h1>
+        <a th:href="@{/}">Regresar</a>
+        
+        <div th:if="${loan == null}">
+        	<p>Id Prestamo: <span th:text="${loan.id}"></span></p>
+	        <p>Id Usuario: <span th:text="${loan.getUser().getId}"></span></p>
+	        <p>Nombre Usuario: <span th:text="${loan.getUser().getFirstName}"></span></p>
+	        <p>Apellido Usuario: <span th:text="${loan.getUser().getLastName}"></span></p>
+	   </div>
+        <form th:action="@{/editLoan}" method="post" th:object="${loan}">
+            <input type="hidden" name="id" th:field="*{id}"/>
+            <br/>
+            <label for="total">Total:</label>
+            <input type="text" name="total" th:field="*{total}"/>
+            <br/>
+            <div th:if="${loan != null}">
+	            <label for="userId">UserID:</label>
+	            <input type="text" name="userId" th:field="*{loan.setUser}"/>
+            <br/>
+        
+	   		</div>
+            <input type="submit" name="guardar" value="Guardar"/>
+        </form>
+    </body>
+</html>
