@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -26,18 +25,13 @@ public class ControllerUser {
 	//Encontrar todos los usuarios
 	@GetMapping("/users")
 	public List<UserDTO> findAllUser() {
-//		List<UserDTO> users = new ArrayList();
-//		
-//		for(User user : userService.findAllUser()) {
-//			users.add(new UserDTO(user));
-//		}
 		return userService.findAllUser();
 	}
 	
 	//Encontrar usuario  por @id
 	@GetMapping("/user/{id}")
 	public UserDTO findUser(@PathVariable Long id) {
-		return userService.findUser(new User(id,null,null,null));
+		return new UserDTO(userService.findUser(new User(id,null,null,null)));
 	}
 	
 	//Crear nuevo Usuario
@@ -47,8 +41,18 @@ public class ControllerUser {
 	}
 	
 	@PutMapping("/user/{id}")
-	public User updateUser(@PathVariable Long id ,@RequestBody User user) {
-		return userService.save(user);
+	public User updateUser(@PathVariable Long id ,@RequestBody User newUser) {
+//		return userService.save(user);
+		return userService.findUserById(new User(id,null,null,null))
+        .map(user -> {
+            user.setEmail(newUser.getEmail());
+            user.setFirstName(newUser.getFirstName());
+            user.setLastName(newUser.getLastName());
+            return userService.save(user);
+        })
+        .orElseGet(() -> {
+            return userService.save(newUser);
+        });
 	}
 	
 	@DeleteMapping("/user/{id}")

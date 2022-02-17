@@ -2,6 +2,7 @@ package com.cash.apiUsuario.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -42,8 +43,13 @@ public class UserServiceImpl implements UserService {
 	}
 
 	@Override
-	public UserDTO findUser(User user) {
-		return new UserDTO(userDao.findById(user.getId()).orElse(null));
+	public User findUser(User user) {
+		return userDao.findById(user.getId()).orElse(null);
+	}
+	
+	@Override
+	public Optional<User> findUserById(User user) {
+		return userDao.findById(user.getId());
 	}
 
 }

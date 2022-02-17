@@ -10,6 +10,9 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.Table;
+
+import com.cash.apiUsuario.DTO.LoanDTO;
+
 import javax.persistence.ManyToOne;
 
 import lombok.Data;
@@ -39,6 +42,18 @@ public class Loan implements Serializable{
 
 	public Loan() {
 		super();
+	}
+
+	public Loan(LoanDTO loanDto) {
+		super();
+		this.id = loanDto.getId();
+		this.total = loanDto.getTotal();
+		this.user = new User();
+	}
+
+	public Loan(Long id) {
+		super();
+		this.id = id;
 	}
 
 	public Loan(Long id, double total) {

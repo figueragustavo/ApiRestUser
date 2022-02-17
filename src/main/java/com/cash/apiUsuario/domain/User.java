@@ -27,7 +27,7 @@ public class User implements Serializable{
 	private String firstName;
 	@Column(name="lastname")
 	private String lastName;
-	@OneToMany(mappedBy = "user", orphanRemoval = true, cascade = CascadeType.ALL )
+	@OneToMany(mappedBy = "user", orphanRemoval = true )
 	private List<Loan> loans;
 	
 	public User() {

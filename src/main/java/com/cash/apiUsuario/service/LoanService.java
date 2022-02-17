@@ -1,6 +1,7 @@
 package com.cash.apiUsuario.service;
 
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,4 +23,6 @@ public interface LoanService {
 	public List<LoanDTO> findAllLoans(Integer pageNo, Integer pageSize, String sortBy);
 
 	public List<LoanDTO> findAllLoansByUser(Integer pageNo, Integer pageSize, Long userId);
+	
+	public Optional<Loan> findLoanById(Loan loan); 
 }

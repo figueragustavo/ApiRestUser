@@ -19,6 +19,9 @@ import com.cash.apiUsuario.domain.User;
 import com.cash.apiUsuario.service.LoanService;
 import com.cash.apiUsuario.service.UserService;
 
+import lombok.extern.slf4j.Slf4j;
+
+@Slf4j
 @RestController
 public class ControllerLoan {
 	
@@ -37,23 +40,38 @@ public class ControllerLoan {
 	}
 	
 	@PostMapping("/loan")
-	public Loan createLoan(@RequestBody Loan loan) {
-		return loanService.save(loan);
+	public LoanDTO createLoan(@RequestBody LoanDTO newLoan) {
+		log.info("userid: "+newLoan.getId());
+		User user = userService.findUser(new User(newLoan.getUserId(),null,null,null));
+		Loan loan = new Loan(newLoan.getId(),newLoan.getTotal(), user);
+		return new LoanDTO(loanService.save(loan));
 	}
 	
 	@PutMapping("/loan/{id}")
-	public Loan editLoan(@PathVariable Long id ,@RequestBody Loan loan) {
-		return loanService.save(loan);
+	public LoanDTO editLoan(@PathVariable Long id ,@RequestBody LoanDTO newLoanDto) {
+//		return loanService.save(loan);
+		Loan newLoan = new Loan(newLoanDto);
+		User user = userService.findUser(new User(newLoanDto.getUserId(),null,null,null));
+		newLoan.setUser(user);
+		return loanService.findLoanById(new Loan(id))
+		        .map(loan -> {
+		            loan.setTotal(newLoan.getTotal());
+		            loan.setUser(newLoan.getUser());
+		            return new LoanDTO(loanService.save(loan));
+		        })
+		        .orElseGet(() -> {
+		            return new LoanDTO(loanService.save(newLoan));
+		        });
 	}
 	
 	@DeleteMapping("/loan/{id}")
 	public void deleteLoan(@PathVariable Long id) {
-		loanService.delete(new Loan(id,0,null));
+		loanService.delete(new Loan(id));
 	}
 	
 	@GetMapping("/loans/{idUser}")
-	public UserDTO findLoansByUser(@PathVariable Long idUser) {
-		return userService.findUser(new User(idUser,null,null,null));	
+	public UserDTO findLoansByUser(@PathVariable Long userId) {
+		return new UserDTO(userService.findUser(new User(userId,null,null,null)));	
 	}
 	
 	@GetMapping("/loanspage")

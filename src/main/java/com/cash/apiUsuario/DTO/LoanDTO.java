@@ -18,6 +18,15 @@ public class LoanDTO {
 		this.userId = loan.getUser().getId();
 	}
 
+	public LoanDTO(Long userId) {
+		super();
+		this.userId = userId;
+	}
+
+	public LoanDTO() {
+		super();
+	}
+
 
 	
 }

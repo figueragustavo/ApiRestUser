@@ -2,6 +2,7 @@ package com.cash.apiUsuario.serviceImpl;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -90,5 +91,10 @@ public class LoanServiceImpl implements LoanService {
 		
 		
 		return loans;
+	}
+	
+	@Override
+	public Optional<Loan> findLoanById(Loan loan) {
+		return loanDao.findById(loan.getId());
 	}
 }
