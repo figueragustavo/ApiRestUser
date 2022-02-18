@@ -30,15 +30,19 @@ public class ControllerLoan {
 	@Autowired
 	private UserService userService;
 	
+	//Encuentra todos los prestamos
 	@GetMapping("/loans")
 	public List<LoanDTO> findAllLoans() {
 		return loanService.findAllLoans();
 	}
+	
+	//Encuentra prestamo por id
 	@GetMapping("/loan/{id}")
 	public LoanDTO findLoanById(@PathVariable Long id) {
 		return loanService.findLoan(new Loan(id,0,null));
 	}
 	
+	//Crea nuevo prestamo
 	@PostMapping("/loan")
 	public LoanDTO createLoan(@RequestBody LoanDTO newLoan) {
 		log.info("userid: "+newLoan.getId());
@@ -47,6 +51,7 @@ public class ControllerLoan {
 		return new LoanDTO(loanService.save(loan));
 	}
 	
+	//Modifica o crea nuevo prestamo
 	@PutMapping("/loan/{id}")
 	public LoanDTO editLoan(@PathVariable Long id ,@RequestBody LoanDTO newLoanDto) {
 //		return loanService.save(loan);
@@ -64,24 +69,28 @@ public class ControllerLoan {
 		        });
 	}
 	
+	//Elimina prestamo
 	@DeleteMapping("/loan/{id}")
 	public void deleteLoan(@PathVariable Long id) {
 		loanService.delete(new Loan(id));
 	}
 	
-	@GetMapping("/loans/{idUser}")
+	//Encuentra prestamos por id de usuario
+	@GetMapping("/loans/{userId}")
 	public UserDTO findLoansByUser(@PathVariable Long userId) {
 		return new UserDTO(userService.findUser(new User(userId,null,null,null)));	
 	}
 	
+	//pagina la busqueda de todos los prestamos
 	@GetMapping("/loanspage")
-	public List<LoanDTO> findAllLoans(@RequestParam(defaultValue = "0") Integer pageNo, 
-										@RequestParam(defaultValue = "10") Integer pageSize,
+	public List<LoanDTO> findAllLoans(@RequestParam(defaultValue = "0") Integer page, 
+										@RequestParam(defaultValue = "10") Integer size,
 										@RequestParam(defaultValue = "id") String sortBy) {
 		
-		return loanService.findAllLoans(pageNo, pageSize, sortBy);
+		return loanService.findAllLoans(page, size, sortBy);
 	}
 	
+	//Pagina la busqueda de los prestamos por id de usuario
 	@GetMapping("/loanspagebyuser")
 	public List<LoanDTO> findAllLoansbyUser(@RequestParam(defaultValue = "0") Integer page, 
 											@RequestParam(defaultValue = "10") Integer size,

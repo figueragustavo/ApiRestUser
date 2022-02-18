@@ -40,6 +40,7 @@ public class ControllerUser {
 		return userService.save(user);
 	}
 	
+	//modifica o crea usuario
 	@PutMapping("/user/{id}")
 	public User updateUser(@PathVariable Long id ,@RequestBody User newUser) {
 //		return userService.save(user);
@@ -54,7 +55,8 @@ public class ControllerUser {
             return userService.save(newUser);
         });
 	}
-	
+
+	//Elimina usuario
 	@DeleteMapping("/user/{id}")
 	public void deleteUser(@PathVariable("id") Long id) {
 		userService.delete(new User(id,null,null,null));
